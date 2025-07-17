@@ -22,5 +22,15 @@ describe('SweetService', () => {
         expect(() => sweetService.addSweet(sweet2)).toThrow('Sweet with this ID already exists');
     });
 
-    
+    // Delete Sweet Tests
+    test('should delete a sweet by id', () => {
+        const sweet = new Sweet(1, 'Chocolate Bar', 'chocolate', 2.5, 10);
+        sweetService.addSweet(sweet);
+        sweetService.deleteSweet(1);
+        expect(sweetService.getAllSweets()).not.toContainEqual(sweet);
+    });
+
+    test('should throw error when deleting non-existent sweet', () => {
+        expect(() => sweetService.deleteSweet(999)).toThrow('Sweet not found');
+    });
 });
