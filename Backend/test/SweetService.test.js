@@ -70,4 +70,33 @@ describe('SweetService', () => {
         expect(results).not.toContainEqual(sweet2);
         expect(results).not.toContainEqual(sweet3);
     });
+
+    // Sort Tests
+    test('should sort sweets by name', () => {
+        const sweet1 = new Sweet(1, 'Chocolate Bar', 'chocolate', 2.5, 10);
+        const sweet2 = new Sweet(2, 'Gummy Bears', 'candy', 1.5, 20);
+        const sweet3 = new Sweet(3, 'Apple Pie', 'pastry', 3.0, 15);
+        sweetService.addSweet(sweet1);
+        sweetService.addSweet(sweet2);
+        sweetService.addSweet(sweet3);
+        
+        const sorted = sweetService.getSortedSweets('name');
+        expect(sorted[0].name).toBe('Apple Pie');
+        expect(sorted[1].name).toBe('Chocolate Bar');
+        expect(sorted[2].name).toBe('Gummy Bears');
+    });
+
+    test('should sort sweets by price', () => {
+        const sweet1 = new Sweet(1, 'Chocolate Bar', 'chocolate', 2.5, 10);
+        const sweet2 = new Sweet(2, 'Gummy Bears', 'candy', 1.5, 20);
+        const sweet3 = new Sweet(3, 'Apple Pie', 'pastry', 3.0, 15);
+        sweetService.addSweet(sweet1);
+        sweetService.addSweet(sweet2);
+        sweetService.addSweet(sweet3);
+        
+        const sorted = sweetService.getSortedSweets('price');
+        expect(sorted[0].price).toBe(1.5);
+        expect(sorted[1].price).toBe(2.5);
+        expect(sorted[2].price).toBe(3.0);
+    });
 });
