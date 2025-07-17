@@ -99,4 +99,18 @@ describe('SweetService', () => {
         expect(sorted[1].price).toBe(2.5);
         expect(sorted[2].price).toBe(3.0);
     });
+
+    //sort tests
+    test('should purchase sweet and decrease quantity', () => {
+        const sweet = new Sweet(1, 'Chocolate Bar', 'chocolate', 2.5, 10);
+        sweetService.addSweet(sweet);
+        sweetService.purchaseSweet(1, 3);
+        expect(sweet.quantity).toBe(7);
+    });
+
+    test('should throw error when purchasing more than available', () => {
+        const sweet = new Sweet(1, 'Chocolate Bar', 'chocolate', 2.5, 10);
+        sweetService.addSweet(sweet);
+        expect(() => sweetService.purchaseSweet(1, 15)).toThrow('Not enough stock');
+    });
 });
