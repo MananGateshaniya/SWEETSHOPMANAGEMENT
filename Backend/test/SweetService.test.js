@@ -100,7 +100,7 @@ describe('SweetService', () => {
         expect(sorted[2].price).toBe(3.0);
     });
 
-    //sort tests
+    //purchase tests
     test('should purchase sweet and decrease quantity', () => {
         const sweet = new Sweet(1, 'Chocolate Bar', 'chocolate', 2.5, 10);
         sweetService.addSweet(sweet);
@@ -112,5 +112,17 @@ describe('SweetService', () => {
         const sweet = new Sweet(1, 'Chocolate Bar', 'chocolate', 2.5, 10);
         sweetService.addSweet(sweet);
         expect(() => sweetService.purchaseSweet(1, 15)).toThrow('Not enough stock');
+    });
+
+    // Restock Tests
+    test('should restock sweet and increase quantity', () => {
+        const sweet = new Sweet(1, 'Chocolate Bar', 'chocolate', 2.5, 10);
+        sweetService.addSweet(sweet);
+        sweetService.restockSweet(1, 5);
+        expect(sweet.quantity).toBe(15);
+    });
+
+    test('should throw error when restocking non-existent sweet', () => {
+        expect(() => sweetService.restockSweet(999, 10)).toThrow('Sweet not found');
     });
 });
