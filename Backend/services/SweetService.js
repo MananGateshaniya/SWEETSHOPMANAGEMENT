@@ -34,6 +34,28 @@ class SweetService {
             return nameMatch && categoryMatch && minPriceMatch && maxPriceMatch;
         });
     }
+
+    getSortedSweets(sortBy) {
+        const sorted = [...this.sweets];
+        switch (sortBy) {
+            case 'name':
+                sorted.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            case 'category':
+                sorted.sort((a, b) => a.category.localeCompare(b.category));
+                break;
+            case 'price':
+                sorted.sort((a, b) => a.price - b.price);
+                break;
+            case 'quantity':
+                sorted.sort((a, b) => a.quantity - b.quantity);
+                break;
+            default:
+                // Default sort by ID
+                sorted.sort((a, b) => a.id - b.id);
+        }
+        return sorted;
+    }
 }
 
 module.exports = SweetService;
