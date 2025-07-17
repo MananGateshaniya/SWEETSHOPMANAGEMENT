@@ -2,7 +2,7 @@
 
 A full-stack application for managing a sweet shop inventory with TDD (Test-Driven Development) approach.
 
-![Sweet Shop Demo](https://github.com/MananGateshaniya/SWEETSHOPMANAGEMENT/blob/0e9fee5584bd944226690ca456022014c619db17/Screenshot%202025-07-17%20113856.png) *(Replace with actual screenshot)*
+![Sweet Shop Demo](https://github.com/MananGateshaniya/SWEETSHOPMANAGEMENT/blob/0e9fee5584bd944226690ca456022014c619db17/Screenshot%202025-07-17%20113856.png)
 
 ## Features
 
