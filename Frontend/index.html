@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Shop Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="d-flex justify-content-center align-items-center position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50" style="z-index: 9999; display: none">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient shadow-sm" style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-cup-straw me-2"></i>Sweet Shop Manager
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#inventory"><i class="bi bi-box-seam me-1"></i> Inventory</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#add-sweet"><i class="bi bi-plus-circle me-1"></i> Add Sweet</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#quick-actions"><i class="bi bi-lightning me-1"></i> Quick Actions</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <!-- Stats Cards -->
+        <div class="row mb-4" id="stats">
+            <div class="col-md-3 mb-3">
+                <div class="card stat-card bg-primary bg-gradient text-white shadow">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-subtitle mb-2">Total Items</h6>
+                                <h2 class="card-title mb-0" id="totalItems">0</h2>
+                            </div>
+                            <i class="bi bi-box-seam fs-1 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card stat-card bg-success bg-gradient text-white shadow">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-subtitle mb-2">In Stock</h6>
+                                <h2 class="card-title mb-0" id="inStock">0</h2>
+                            </div>
+                            <i class="bi bi-check-circle fs-1 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card stat-card bg-warning bg-gradient text-white shadow">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-subtitle mb-2">Low Stock</h6>
+                                <h2 class="card-title mb-0" id="lowStock">0</h2>
+                            </div>
+                            <i class="bi bi-exclamation-triangle fs-1 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card stat-card bg-danger bg-gradient text-white shadow">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-subtitle mb-2">Out of Stock</h6>
+                                <h2 class="card-title mb-0" id="outOfStock">0</h2>
+                            </div>
+                            <i class="bi bi-x-circle fs-1 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-lg-4 mb-4">
+                <!-- Add Sweet Card -->
+                <div class="card shadow-sm mb-4" id="add-sweet">
+                    <div class="card-header bg-gradient bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-plus-circle me-2"></i>Add New Sweet
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="addSweetForm">
+                            <div class="mb-3">
+                                <label for="sweetId" class="form-label">ID</label>
+                                <input type="number" class="form-control" id="sweetId" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="sweetName" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="sweetName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="sweetCategory" class="form-label">Category</label>
+                                <select class="form-select" id="sweetCategory" required>
+                                    <option value="chocolate">Chocolate</option>
+                                    <option value="candy">Candy</option>
+                                    <option value="pastry">Pastry</option>
+                                    <option value="biscuit">Biscuit</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="sweetPrice" class="form-label">Price ($)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" step="0.01" class="form-control" id="sweetPrice" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="sweetQuantity" class="form-label">Quantity</label>
+                                    <input type="number" class="form-control" id="sweetQuantity" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-plus-circle me-2"></i>Add Sweet
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Search & Filter Card -->
+                <div class="card shadow-sm" id="search-filter">
+                    <div class="card-header bg-gradient bg-info text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-search me-2"></i>Search & Filter
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="searchName" class="form-label">Search by Name</label>
+                            <input type="text" class="form-control" id="searchName" placeholder="Sweet name...">
+                        </div>
+                        <div class="mb-3">
+                            <label for="searchCategory" class="form-label">Filter by Category</label>
+                            <select class="form-select" id="searchCategory">
+                                <option value="">All Categories</option>
+                                <option value="chocolate">Chocolate</option>
+                                <option value="candy">Candy</option>
+                                <option value="pastry">Pastry</option>
+                                <option value="biscuit">Biscuit</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Price Range ($)</label>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text">Min</span>
+                                <input type="number" step="0.01" class="form-control" id="minPrice" placeholder="0.00">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-text">Max</span>
+                                <input type="number" step="0.01" class="form-control" id="maxPrice" placeholder="Any">
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button id="applyFilters" class="btn btn-info text-white">
+                                <i class="bi bi-funnel me-2"></i>Apply Filters
+                            </button>
+                            <button id="resetFilters" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-counterclockwise me-2"></i>Reset Filters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-8">
+                <!-- Inventory Card -->
+                <div class="card shadow-sm mb-4" id="inventory">
+                    <div class="card-header bg-gradient bg-success text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">
+                                <i class="bi bi-box-seam me-2"></i>Sweet Inventory
+                            </h5>
+                            <div class="d-flex">
+                                <select id="sortBy" class="form-select form-select-sm me-2">
+                                    <option value="">Sort By</option>
+                                    <option value="name">Name (A-Z)</option>
+                                    <option value="category">Category</option>
+                                    <option value="price">Price (Low-High)</option>
+                                    <option value="quantity">Quantity (Low-High)</option>
+                                </select>
+                                <button id="refreshBtn" class="btn btn-sm btn-light">
+                                    <i class="bi bi-arrow-repeat"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Stock</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sweetsTableBody">
+                                    <!-- Sweets will be populated here -->
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="text-muted small" id="inventorySummary">Showing 0 items</div>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination pagination-sm mb-0" id="pagination">
+                                    <!-- Pagination will be added here -->
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions Card -->
+                <div class="card shadow-sm" id="quick-actions">
+                    <div class="card-header bg-gradient bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-lightning me-2"></i>Quick Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <div class="card h-100 border-danger">
+                                    <div class="card-header bg-danger bg-opacity-10 text-danger">
+                                        <h6 class="mb-0"><i class="bi bi-cart-dash me-2"></i>Purchase</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+                                            <input type="number" class="form-control" id="purchaseId" placeholder="Sweet ID">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text"><i class="bi bi-123"></i></span>
+                                            <input type="number" class="form-control" id="purchaseQty" placeholder="Qty" value="1" min="1">
+                                        </div>
+                                        <button class="btn btn-danger w-100" id="purchaseBtn">
+                                            <i class="bi bi-cart-dash me-2"></i>Purchase
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100 border-success">
+                                    <div class="card-header bg-success bg-opacity-10 text-success">
+                                        <h6 class="mb-0"><i class="bi bi-truck me-2"></i>Restock</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+                                            <input type="number" class="form-control" id="restockId" placeholder="Sweet ID">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text"><i class="bi bi-123"></i></span>
+                                            <input type="number" class="form-control" id="restockQty" placeholder="Qty" value="1" min="1">
+                                        </div>
+                                        <button class="btn btn-success w-100" id="restockBtn">
+                                            <i class="bi bi-truck me-2"></i>Restock
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sweet Details Modal -->
+    <div class="modal fade" id="sweetModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sweetModalTitle">Sweet Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="sweetModalBody">
+                    <!-- Content will be added dynamically -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalTitle">Confirm Action</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="confirmationModalBody">
+                    Are you sure you want to perform this action?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmActionBtn">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
