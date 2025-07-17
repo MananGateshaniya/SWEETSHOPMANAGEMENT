@@ -23,6 +23,17 @@ class SweetService {
         }
         this.sweets.splice(index, 1);
     }
+
+    searchSweets({ name, category, minPrice, maxPrice }) {
+        return this.sweets.filter(sweet => {
+            const nameMatch = !name || sweet.name.toLowerCase().includes(name.toLowerCase());
+            const categoryMatch = !category || sweet.category.toLowerCase() === category.toLowerCase();
+            const minPriceMatch = !minPrice || sweet.price >= minPrice;
+            const maxPriceMatch = !maxPrice || sweet.price <= maxPrice;
+            
+            return nameMatch && categoryMatch && minPriceMatch && maxPriceMatch;
+        });
+    }
 }
 
 module.exports = SweetService;
